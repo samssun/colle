@@ -1,0 +1,469 @@
+@charset "UTF-8";
+/* $system-color-blue:#0063B1;
+ * $system-color-orange:#FF8C00;
+ * $system-color-purple:#B146C2;
+ * $system-color-green:#C30052;
+ * $system-color-yellow:#FFB900; */
+/* To-do:
+ *  • Add ripple on new tab, menu, profile, navigation buttons
+ *       This ripple must be on the point, fade when you move off while holding down and the ripple has filled, then when moving back while still holding it re-ripples from the entry point - it's a nice effect.
+ *  × Make tabs responsive
+ *  × Whole main bar
+ */
+body {
+  display: flex;
+  flex-direction: column;
+  padding: 15px 48px;
+  background-color: #EEEEEE;
+  /**[data-ripple] {
+     position: relative;
+     >*:not(.container) {
+        &.held, &:active {
+           .ripple {
+              position: absolute;
+
+              background-color:#000;
+
+              transform:translate(-50%,-50%);
+
+              animation: grow .25s ease-out;
+              @keyframes grow {
+                 0% {
+                    width:0px;
+                    height:0px;
+                 }
+                 100% {
+                    width:64px;
+                    height:64px;
+                 }
+              }
+           }
+        }
+     }
+  }*/
+}
+body #chrome-bar {
+  position: relative;
+  top: 0px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-bottom: 1px solid #B6B4B6;
+  font-family: "Segoe UI", "Roboto", sans-serif;
+  box-shadow: 8px 15px 26px 25px #888888;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+}
+body #chrome-bar.windowed {
+  top: -9px;
+}
+body #chrome-bar #tab-bar {
+  display: flex;
+  flex-direction: row;
+  height: 34px;
+  padding-left: 8px;
+  background-color: #4980dd;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+body #chrome-bar #tab-bar.windowed {
+  height: 43px;
+  padding-top: 9px;
+}
+body #chrome-bar #tab-bar.windowed #window-buttons {
+  top: -9px;
+}
+body #chrome-bar #tab-bar #tabs {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame {
+  flex-grow: 1;
+  max-width: 350px;
+  width: calc(calc(100% - 240px)/3);
+  margin-right: -17px;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame:before {
+  position: absolute;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container {
+  position: relative;
+  left: -8px;
+  overflow: hidden;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .round {
+  z-index: 1;
+  position: absolute;
+  bottom: 0px;
+  width: 32px;
+  height: 32px;
+  border: 8px solid transparent;
+  border-radius: 100%;
+  transition: 0.25s;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .round.round-left {
+  left: -16px;
+  bottom: -8px;
+  border-right-color: transparent;
+  transform: rotate(45deg);
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .round.round-right {
+  right: -16px;
+  bottom: -8px;
+  transform: rotate(-45deg);
+  border-left-color: transparent;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab {
+  z-index: 2;
+  position: relative;
+  left: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 350px;
+  height: 34px;
+  padding: 0px 8px 0px 12px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  background-color: transparent;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  transition: 0.25s;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .icon {
+  width: 20px;
+  height: 20px;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .title {
+  position: relative;
+  top: -1px;
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-left: 8px;
+  margin-right: 4px;
+  color: #5F6368;
+  font-size: 13px;
+  pointer-events: none;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .title:before {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  
+  content: "";
+  transition: 0.25s;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .close {
+  position: relative;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 100%;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .close svg {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  pointer-events: none;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .close svg path {
+  fill: #5F6368;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .close:hover {
+  background-color: #E8EAED;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .close:hover svg path {
+  fill: #3B4042;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container .tab .close:active {
+  background-color: #DADCE0;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container:after {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  transform: translateY(0.5px);
+  width: 1px;
+  height: 20px;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container:hover .round.round-left {
+  border-right-color: #EEEFF1;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container:hover .round.round-right {
+  border-left-color: #EEEFF1;
+}
+
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container:hover .tab .title {
+  color: #5F6368;
+}
+
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container.active {
+  z-index: 5;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container.active .round {
+  transition: 0s;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container.active .round.round-left {
+  border-right-color: #FFFFFF;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container.active .round.round-right {
+  border-left-color: #FFFFFF;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container.active .tab {
+  transition: 0s;
+  
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container.active .tab .title {
+  color: white;
+}
+body #chrome-bar #tab-bar #tabs .tab-frame .tab-container.active .tab .title:before {
+  transition: 0s;
+}
+body #chrome-bar #tab-bar #tabs #new-tab {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  margin-left: 9px;
+  border-radius: 100%;
+  transition: 0.25s;
+}
+body #chrome-bar #tab-bar #tabs #new-tab svg {
+  width: 12px;
+  height: 12px;
+}
+body #chrome-bar #tab-bar #tabs #new-tab svg path {
+  fill: #595C62;
+}
+body #chrome-bar #tab-bar #tabs #new-tab:hover {
+  background-color: #CBCED3;
+}
+body #chrome-bar #tab-bar #tabs #new-tab:active {
+  background-color: #BFC1C6;
+}
+body #chrome-bar #tab-bar #gap {
+  width: 64px;
+}
+body #chrome-bar #tab-bar #window-buttons {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+}
+body #chrome-bar #tab-bar #window-buttons > div {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 29px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+body #chrome-bar #tab-bar #window-buttons > div img {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  pointer-events: none;
+  padding: 10px 20px;
+}
+body #chrome-bar #tab-bar #window-buttons > div, body #chrome-bar #tab-bar #window-buttons > div * {
+  transition: 0.25s;
+}
+body #chrome-bar #tab-bar #window-buttons > div:not(.close):hover {
+  background-color: rgba(0, 0, 0, 0.09765625);
+}
+body #chrome-bar #tab-bar #window-buttons > div:not(.close):active {
+  background-color: rgba(0, 0, 0, 0.1953125);
+  transition: 0s;
+}
+body #chrome-bar #tab-bar #window-buttons > div.close:hover {
+  background-color: #E81123;
+}
+body #chrome-bar #tab-bar #window-buttons > div.close:hover img {
+  filter: invert(1);
+}
+body #chrome-bar #tab-bar #window-buttons > div.close:active {
+  background-color: #E36571;
+  transition: 0s;
+}
+body #chrome-bar #main-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 30px;
+  padding: 0 6px;
+  background-color: #5e97f7;
+}
+body #chrome-bar #main-bar .button {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: 0 2px;
+  border-radius: 100%;
+  transition: 0.25s;
+}
+body #chrome-bar #main-bar .button[disabled] svg path {
+  fill: #BABCBE;
+}
+body #chrome-bar #main-bar .button:not([disabled]):hover {
+  background-color: #EEEEEE;
+}
+body #chrome-bar #main-bar .button:not([disabled]):active {
+  transition: 0.05s;
+  background-color: #E2E2E2;
+}
+body #chrome-bar #main-bar .button:not([disabled]) svg path {
+  fill: #5F6368;
+}
+body #chrome-bar #main-bar .button svg {
+  width: 14px;
+  height: 14px;
+}
+body #chrome-bar #main-bar .button.extension {
+  position: relative;
+}
+body #chrome-bar #main-bar .button.extension img {
+  width: 16px;
+}
+body #chrome-bar #main-bar .button.extension[data-disabled] {
+  filter: grayscale(1) opacity(50%);
+}
+body #chrome-bar #main-bar .button.extension[data-notifications]:before {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 12px;
+  min-width: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px #FFFFFF;
+  background-color: #555555;
+  color: #FFFFFF;
+  font-size: 6px;
+  content: attr(data-notifications);
+}
+body #chrome-bar #main-bar #address-bar {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow: hidden;
+  height: 28px;
+  margin: 0 8px 0 6px;
+  border-radius: 20px;
+  background-color: #5e97f7;
+  white-space: pre;
+}
+body #chrome-bar #main-bar #address-bar.selected {
+  box-shadow: 0 0 0 1px #B3CEFB, inset 0 0 0 1px #B3CEFB;
+  background-color: #FFFFFF;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 24px;
+  min-width: 10px;
+  padding: 0 10px;
+  margin: 0 2px;
+  border-radius: 20px;
+  font-size: 14px;
+  transition: background-color 0.25s;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button.show-special {
+  margin-right: 9px;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button svg path {
+  fill: #3f3f3e;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button svg.favourite path {
+  fill: #4285F4;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button svg.https, body #chrome-bar #main-bar #address-bar .address-bar-button img.https, body #chrome-bar #main-bar #address-bar .address-bar-button .special.https {
+  width: 16px;
+  height: 16px;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button svg.error, body #chrome-bar #main-bar #address-bar .address-bar-button img.error, body #chrome-bar #main-bar #address-bar .address-bar-button .special.error {
+  width: 14px;
+  height: 14px;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button svg.favicon, body #chrome-bar #main-bar #address-bar .address-bar-button svg.not-favourite, body #chrome-bar #main-bar #address-bar .address-bar-button svg.favourite, body #chrome-bar #main-bar #address-bar .address-bar-button img.favicon, body #chrome-bar #main-bar #address-bar .address-bar-button img.not-favourite, body #chrome-bar #main-bar #address-bar .address-bar-button img.favourite, body #chrome-bar #main-bar #address-bar .address-bar-button .special.favicon, body #chrome-bar #main-bar #address-bar .address-bar-button .special.not-favourite, body #chrome-bar #main-bar #address-bar .address-bar-button .special.favourite {
+  width: 16px;
+  height: 16px;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button svg.special, body #chrome-bar #main-bar #address-bar .address-bar-button img.special, body #chrome-bar #main-bar #address-bar .address-bar-button .special.special {
+  position: relative;
+  margin-left: 10px;
+  color: #5F6368;
+  white-space: pre;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button svg.special:before, body #chrome-bar #main-bar #address-bar .address-bar-button img.special:before, body #chrome-bar #main-bar #address-bar .address-bar-button .special.special:before {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: -10px;
+  width: 1px;
+  background-color: #9D9E9F;
+  content: "";
+  transition: 0.25s;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button svg.hide, body #chrome-bar #main-bar #address-bar .address-bar-button img.hide, body #chrome-bar #main-bar #address-bar .address-bar-button .special.hide {
+  display: none;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button:not([disabled]):hover {
+  background-color: #D6D8DA;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button:not([disabled]):hover .special:before {
+  opacity: 0;
+}
+body #chrome-bar #main-bar #address-bar .address-bar-button:not([disabled]):active {
+  transition: 0.05s;
+  background-color: #C9CBCD;
+}
+body #chrome-bar #main-bar #address-bar #address {
+  flex-grow: 1;
+  font-size: 14px;
+}
+body #chrome-bar #main-bar #address-bar #address .protocol {
+  color: #ffffff;
+}
+body #chrome-bar #main-bar #address-bar #address .domain {
+  color: white;
+}
+body #chrome-bar #main-bar #address-bar #address .extension {
+  color: white;
+}
+body #chrome-bar #main-bar .seperator {
+  width: 1px;
+  height: 16px;
+  margin: 0 6px 0 8px;
+  background-color: #CED0D1;
+}
+.prevent-scroll {
+  overflow:hidden;
+}

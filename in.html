@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Hide/Show Link Example</title>
+    <style>
+        /* Initially hide the link */
+        #myLink {
+            display: none;
+        }
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Buttons to control visibility -->
+    <button id="showBtn">Show Link</button>
+    <button id="hideBtn" style="display:none;">Hide Link</button>
+
+    <!-- The link to hide/show -->
+    <a id="myLink" href="https://example.com" target="_blank">Visit Example</a>
+
+    <script>
+        // Get elements
+        const showBtn = document.getElementById('showBtn');
+        const hideBtn = document.getElementById('hideBtn');
+        const myLink = document.getElementById('myLink');
+
+        // Show link
+        showBtn.addEventListener('click', () => {
+            myLink.style.display = 'inline';
+            showBtn.style.display = 'none';
+            hideBtn.style.display = 'inline';
+        });
+
+        // Hide link
+        hideBtn.addEventListener('click', () => {
+            myLink.style.display = 'none';
+            hideBtn.style.display = 'none';
+            showBtn.style.display = 'inline';
+        });
+    </script>
+
+</body>
+</html>
